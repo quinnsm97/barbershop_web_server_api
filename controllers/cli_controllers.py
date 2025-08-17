@@ -30,3 +30,9 @@ def seed_tables():
             phone="0400000001"
         )
     ]
+    # Add to session
+    db.session.add_all(customers)
+    # Commit
+    db.session.commit()
+
+    print("Tables seeded.")
