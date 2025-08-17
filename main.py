@@ -1,5 +1,5 @@
 from flask import Flask
-from controllers.cli_controllers import db_commands
+from controllers.cli_controller import db_commands
 
 from init import db
 import os
