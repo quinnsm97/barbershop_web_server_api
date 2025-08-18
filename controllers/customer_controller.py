@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from init import db
 from models.customer import Customer, customer_schemas, customer_schema
 
@@ -36,5 +36,22 @@ def get_a_customer(customer_id):
         return {"message": f"Customer with id {customer_id} does not exist"}, 404
 
 # POST /
+@customer_bp.route("/", methods=["POST"])
+def create_a_customer():
+    # GET info from REQUEST body
+    body_data = request.get_json()
+    # Create a Customer object from Customer class with body response data
+    new_customer = Customer(
+        first_name = body_data.get("first_name"),
+        last_name = body_data.get("last_name"),
+        email = body_data.get("email"),
+        phone = body_data.get("phone")
+    )
+    # Add the new customer data to the session
+    db.session.add(new_customer)
+    # Commit the session
+    db.session.commit()
+    # Return
+    return jsonify(customer_schema.dump(new_customer))
 # PUT/PATCH /id
 # DELETE /id
