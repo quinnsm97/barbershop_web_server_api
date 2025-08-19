@@ -1,6 +1,8 @@
 from flask import Blueprint, jsonify, request
 from init import db
 from models.customer import Customer, customer_schemas, customer_schema
+from sqlalchemy.exc import IntegrityError
+from psycopg2 import errorcodes
 
 customer_bp = Blueprint("customer", __name__, url_prefix="/customers")
 
@@ -38,20 +40,31 @@ def get_a_customer(customer_id):
 # POST /
 @customer_bp.route("/", methods=["POST"])
 def create_a_customer():
-    # GET info from REQUEST body
-    body_data = request.get_json()
-    # Create a Customer object from Customer class with body response data
-    new_customer = Customer(
-        first_name = body_data.get("first_name"),
-        last_name = body_data.get("last_name"),
-        email = body_data.get("email"),
-        phone = body_data.get("phone")
-    )
-    # Add the new customer data to the session
-    db.session.add(new_customer)
-    # Commit the session
-    db.session.commit()
-    # Return
-    return jsonify(customer_schema.dump(new_customer))
+    try:
+        # GET info from REQUEST body
+        body_data = request.get_json()
+        # Create a Customer object from Customer class with body response data
+        new_customer = Customer(
+            first_name = body_data.get("first_name"),
+            last_name = body_data.get("last_name"),
+            email = body_data.get("email"),
+            phone = body_data.get("phone")
+        )
+        # Add the new customer data to the session
+        db.session.add(new_customer)
+        # Commit the session
+        db.session.commit()
+        # Return
+        return jsonify(customer_schema.dump(new_customer))
+    except IntegrityError as err:
+        print(err.orig.pgcode)
+        if err.orig.pgcode == errorcodes.NOT_NULL_VIOLATION:
+            return {"message": f"Required field {err.orig.diag.column_name} cannot be null"}, 400
+        
+        if err.orig.pgcode == errorcodes.UNIQUE_VIOLATION:
+            return{"message": "phone number and/or email must be unique"}, 400
+        
+        else: 
+            return {"message": "Unexpected error occured"}, 400
 # PUT/PATCH /id
 # DELETE /id
