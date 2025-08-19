@@ -9,7 +9,7 @@ customer_bp = Blueprint("customer", __name__, url_prefix="/customers")
 # Routes
 # GET /
 @customer_bp.route("/")
-def get_students():
+def get_customers():
     # Define the GET statement
     # SELECT * FROM customers;
     stmt = db.select(Customer)
@@ -75,5 +75,19 @@ def create_a_customer():
         
         else: 
             return {"message": "Unexpected error occured"}, 400
-# PUT/PATCH /id
+
 # DELETE /id
+@customer_bp.route("/<int:customer_id>", methods=["DELETE"])
+def delete_customer(customer_id):
+    # Find customer with id
+    stmt = db.select(Customer).where(Customer.customer_id == customer_id)
+    customer = db.session.scalar(stmt)
+    # Validation (if exists)
+    if customer:
+        db.session.delete(customer)
+        db.session.commit()
+
+        return {"message": f"Customer with id '{customer_id}' has been removed successfully"}, 200
+    else:
+        return {"message": f"Customer with id '{customer_id}' does not exist"}, 404
+# PUT/PATCH /id
