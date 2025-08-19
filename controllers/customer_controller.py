@@ -62,7 +62,16 @@ def create_a_customer():
             return {"message": f"Required field {err.orig.diag.column_name} cannot be null"}, 400
         
         if err.orig.pgcode == errorcodes.UNIQUE_VIOLATION:
-            return{"message": "phone number and/or email must be unique"}, 400
+            constraint = err.orig.diag.constraint_name
+
+            # Map constraint names to user-friendly messages
+            constraint_map = {
+                "customers_email_key": "email",
+                "customers_phone_key": "phone"
+            }
+
+            column = constraint_map.get(constraint, "field")
+            return {"message": f"{column} must be unique"}, 400
         
         else: 
             return {"message": "Unexpected error occured"}, 400
