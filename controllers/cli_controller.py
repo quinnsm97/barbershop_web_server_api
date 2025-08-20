@@ -1,6 +1,7 @@
 from flask import Blueprint
 from init import db
 from models.customer import Customer
+from models.staff import Staff
 
 db_commands = Blueprint("db", __name__)
 
@@ -31,7 +32,52 @@ def seed_tables():
         )
     ]
     # Add to session
+    staff_members = [
+        Staff(
+            first_name="Jordan",
+            last_name="Smith",
+            role="Barber",
+            specialty="Fades"
+        ),
+        Staff(
+            first_name="Alicia",
+            last_name="Brown",
+            role="Barber",
+            specialty="Scissor Cuts"
+        ),
+        Staff(
+            first_name="Marcus",
+            last_name="Johnson",
+            role="Apprentice",
+            specialty="Shampoo"
+        ),
+        Staff(
+            first_name="Sophie",
+            last_name="Lee",
+            role="Receptionist",
+            specialty="N/A"
+        ),
+        Staff(
+            first_name="Daniel",
+            last_name="White",
+            role="Barber",
+            specialty="Kids Cuts"
+        ),
+        Staff(
+            first_name="Priya",
+            last_name="Patel",
+            role="Barber",
+            specialty="Coloring"
+        ),
+        Staff(
+            first_name="Tom",
+            last_name="Wilson",
+            role="Barber",
+            specialty="Buzz Cuts"
+        )
+    ]
     db.session.add_all(customers)
+    db.session.add_all(staff_members)
     # Commit
     db.session.commit()
 
