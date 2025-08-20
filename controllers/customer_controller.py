@@ -90,4 +90,27 @@ def delete_customer(customer_id):
         return {"message": f"Customer with id '{customer_id}' has been removed successfully"}, 200
     else:
         return {"message": f"Customer with id '{customer_id}' does not exist"}, 404
+    
 # PUT/PATCH /id
+@customer_bp.route("/<int:customer_id>", methods=["PUT", "PATCH"])
+def update_customer(customer_id):
+    # Retrieve via id
+    stmt = db.select(Customer).where(Customer.customer_id == customer_id)
+    customer = db.session.scalar(stmt)
+    
+    if customer:
+        # Retrieve data to be updated
+        body_data = request.get_json()
+        # Make changes
+        customer.first_name = body_data.get("first_name") or customer.first_name
+        customer.last_name = body_data.get("last_name") or customer.last_name
+        customer.email = body_data.get("email") or customer.email
+        customer.phone = body_data.get("phone") or customer.phone
+        # Commit
+        db.session.commit()
+        # Return
+        return jsonify(customer_schema.dump(customer))
+    else:
+        # Return with error message
+        return {"message": f"Customer with id {customer_id} does not exist"}, 404
+
