@@ -1,5 +1,4 @@
 from init import db
-from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
 class Customer(db.Model):
     __tablename__ = "customers"
@@ -8,13 +7,7 @@ class Customer(db.Model):
     last_name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), nullable=False, unique=True)
     phone = db.Column(db.String(50), nullable=False, unique=True)
+    
+    # Relationship to appointments
+    appointments = db.relationship("Appointment", back_populates="customers", cascade="all, delete")
 
-class CustomerSchema(SQLAlchemyAutoSchema):
-    class Meta:
-        model = Customer
-        load_instance = True
-
-# Single entry
-customer_schema = CustomerSchema()
-# Multiple entries
-customer_schemas = CustomerSchema(many=True)

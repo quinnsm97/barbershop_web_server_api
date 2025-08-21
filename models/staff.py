@@ -1,5 +1,5 @@
 from init import db
-from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+
 
 class Staff(db.Model):
     __tablename__ = "staff"
@@ -9,12 +9,6 @@ class Staff(db.Model):
     role = db.Column(db.String(100))
     specialty = db.Column(db.String(100))
 
-class StaffSchema(SQLAlchemyAutoSchema):
-    class Meta:
-        model = Staff
-        load_instance = True
+    # Relationship to appointments
+    appointments = db.relationship("Appointment", back_populates="staff", cascade="all, delete")
 
-# Single entry
-staff_schema = StaffSchema()
-# Multiple entries
-staff_schemas = StaffSchema(many=True)

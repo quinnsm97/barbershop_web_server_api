@@ -1,0 +1,19 @@
+from init import db
+from marshmallow import fields
+from marshmallow.validate import Length, And, Regexp
+
+class Appointment(db.Model):
+    __tablename__ = "appointments"
+
+    id = db.Column(db.Integer, primary_key=True)
+    appointment_datetime = db.Column(db.DateTime, nullable=False)
+    status = db.Column(db.String(50), nullable=False, default="Scheduled")
+
+    # Foreign Keys
+    customer_id = db.Column(db.Integer, db.ForeignKey("customers.customer_id"), nullable=False)
+    staff_id = db.Column(db.Integer, db.ForeignKey("staff.staff_id"), nullable=False)
+
+    # Relationships
+    customers = db.relationship("Customer", back_populates="appointments")
+    staff = db.relationship("Staff", back_populates="appointments")
+
