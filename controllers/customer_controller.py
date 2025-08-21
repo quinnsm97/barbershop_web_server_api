@@ -1,8 +1,9 @@
 from flask import Blueprint, jsonify, request
 from init import db
-from models.customer import Customer, customer_schemas, customer_schema
+from models.customer import Customer
 from sqlalchemy.exc import IntegrityError
 from psycopg2 import errorcodes
+from schemas.schemas import customer_schemas, customer_schema
 
 customer_bp = Blueprint("customer", __name__, url_prefix="/customers")
 
