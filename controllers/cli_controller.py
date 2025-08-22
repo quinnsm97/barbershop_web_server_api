@@ -2,6 +2,7 @@ from flask import Blueprint
 from init import db
 from models.customer import Customer
 from models.staff import Staff
+from models.appointment import Appointment
 
 db_commands = Blueprint("db", __name__)
 
@@ -78,6 +79,30 @@ def seed_tables():
     ]
     db.session.add_all(customers)
     db.session.add_all(staff_members)
+
+    from datetime import datetime, timedelta
+
+    appointments = [
+        Appointment(
+            appointment_datetime=datetime(2025, 8, 22, 10, 0),
+            status="Scheduled",
+            customer_id=1,
+            staff_id=1
+        ),
+        Appointment(
+            appointment_datetime=datetime(2025, 8, 22, 11, 0),
+            status="Completed",
+            customer_id=2,
+            staff_id=2
+        ),
+        Appointment(
+            appointment_datetime=datetime(2025, 8, 23, 9, 30),
+            status="Cancelled",
+            customer_id=1,
+            staff_id=3
+        ),
+    ]
+    db.session.add_all(appointments)
     # Commit
     db.session.commit()
 
