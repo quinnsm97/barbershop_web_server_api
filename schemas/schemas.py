@@ -12,6 +12,8 @@ class CustomerSchema(SQLAlchemyAutoSchema):
         load_instance = True
         include_fk = True
         include_relationships = True
+        fields = ("id", "first_name", "last_name", "email", "phone", "appointments")
+        ordered = True
 
 # Single entry
 customer_schema = CustomerSchema()
