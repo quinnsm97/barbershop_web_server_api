@@ -3,7 +3,7 @@ from init import db
 
 class Staff(db.Model):
     __tablename__ = "staff"
-    staff_id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(100), nullable=False)
     last_name = db.Column(db.String(100))
     role = db.Column(db.String(100))

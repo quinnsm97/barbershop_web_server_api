@@ -10,6 +10,8 @@ class CustomerSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Customer
         load_instance = True
+        include_fk = True
+        include_relationships = True
 
 # Single entry
 customer_schema = CustomerSchema()
@@ -33,8 +35,8 @@ class AppointmentSchema(SQLAlchemyAutoSchema):
         load_instance = True
         include_fk = True
         include_relationships = True
-    customer = fields.Nested("CustomerSchema", only=("customer_id", "first_name", "last_name"))
-    staff = fields.Nested("StaffSchema", only=("staff_id", "first_name", "last_name", "specialty"))
+    customer = fields.Nested("CustomerSchema", only=("id", "first_name", "last_name"))
+    staff = fields.Nested("StaffSchema", only=("id", "first_name", "last_name", "specialty"))
 
 # Single entry
 appointment_schema = AppointmentSchema()

@@ -23,10 +23,10 @@ def get_staff():
         return {"message": "No staff records found."}, 404
     
 # GET /id
-@staff_bp.route("/<int:staff_id>")
-def get_a_staff(staff_id):
+@staff_bp.route("/<int:id>")
+def get_a_staff(id):
     # Define a statement
-    stmt = db.select(Staff).where(Staff.staff_id == staff_id)
+    stmt = db.select(Staff).where(Staff.id == id)
     # Execute
     staff = db.session.scalar(stmt)
 
@@ -36,7 +36,7 @@ def get_a_staff(staff_id):
         # Return data
         return jsonify(data)
     else:
-        return {"message": f"Staff with id {staff_id} does not exist"}, 404
+        return {"message": f"Staff with id {id} does not exist"}, 404
 
 # POST /
 @staff_bp.route("/", methods=["POST"])
@@ -78,25 +78,25 @@ def create_a_staff():
             return {"message": "Unexpected error occured"}, 400
 
 # DELETE /id
-@staff_bp.route("/<int:staff_id>", methods=["DELETE"])
-def delete_staff(staff_id):
+@staff_bp.route("/<int:id>", methods=["DELETE"])
+def delete_staff(id):
     # Find staff with id
-    stmt = db.select(Staff).where(Staff.staff_id == staff_id)
+    stmt = db.select(Staff).where(Staff.id == id)
     staff = db.session.scalar(stmt)
     # Validation (if exists)
     if staff:
         db.session.delete(staff)
         db.session.commit()
 
-        return {"message": f"Staff with id '{staff_id}' has been removed successfully"}, 200
+        return {"message": f"Staff with id '{id}' has been removed successfully"}, 200
     else:
-        return {"message": f"Staff with id '{staff_id}' does not exist"}, 404
+        return {"message": f"Staff with id '{id}' does not exist"}, 404
     
 # PUT/PATCH /id
-@staff_bp.route("/<int:staff_id>", methods=["PUT", "PATCH"])
-def update_staff(staff_id):
+@staff_bp.route("/<int:id>", methods=["PUT", "PATCH"])
+def update_staff(id):
     # Retrieve via id
-    stmt = db.select(Staff).where(Staff.staff_id == staff_id)
+    stmt = db.select(Staff).where(Staff.id == id)
     staff = db.session.scalar(stmt)
     
     if staff:
@@ -113,5 +113,5 @@ def update_staff(staff_id):
         return jsonify(staff_schema.dump(staff))
     else:
         # Return with error message
-        return {"message": f"Staff with id {staff_id} does not exist"}, 404
+        return {"message": f"Staff with id {id} does not exist"}, 404
 

@@ -23,10 +23,10 @@ def get_customers():
         return {"message": "No customer records found."}, 404
     
 # GET /id
-@customer_bp.route("/<int:customer_id>")
-def get_a_customer(customer_id):
+@customer_bp.route("/<int:id>")
+def get_a_customer(id):
     # Define a statement
-    stmt = db.select(Customer).where(Customer.customer_id == customer_id)
+    stmt = db.select(Customer).where(Customer.id == id)
     # Execute
     customer = db.session.scalar(stmt)
 
@@ -36,7 +36,7 @@ def get_a_customer(customer_id):
         # Return data
         return jsonify(data)
     else:
-        return {"message": f"Customer with id {customer_id} does not exist"}, 404
+        return {"message": f"Customer with id {id} does not exist"}, 404
 
 # POST /
 @customer_bp.route("/", methods=["POST"])
@@ -78,25 +78,25 @@ def create_a_customer():
             return {"message": "Unexpected error occured"}, 400
 
 # DELETE /id
-@customer_bp.route("/<int:customer_id>", methods=["DELETE"])
-def delete_customer(customer_id):
+@customer_bp.route("/<int:id>", methods=["DELETE"])
+def delete_customer(id):
     # Find customer with id
-    stmt = db.select(Customer).where(Customer.customer_id == customer_id)
+    stmt = db.select(Customer).where(Customer.id == id)
     customer = db.session.scalar(stmt)
     # Validation (if exists)
     if customer:
         db.session.delete(customer)
         db.session.commit()
 
-        return {"message": f"Customer with id '{customer_id}' has been removed successfully"}, 200
+        return {"message": f"Customer with id '{id}' has been removed successfully"}, 200
     else:
-        return {"message": f"Customer with id '{customer_id}' does not exist"}, 404
+        return {"message": f"Customer with id '{id}' does not exist"}, 404
     
 # PUT/PATCH /id
-@customer_bp.route("/<int:customer_id>", methods=["PUT", "PATCH"])
-def update_customer(customer_id):
+@customer_bp.route("/<int:id>", methods=["PUT", "PATCH"])
+def update_customer(id):
     # Retrieve via id
-    stmt = db.select(Customer).where(Customer.customer_id == customer_id)
+    stmt = db.select(Customer).where(Customer.id == id)
     customer = db.session.scalar(stmt)
     
     if customer:
@@ -113,5 +113,5 @@ def update_customer(customer_id):
         return jsonify(customer_schema.dump(customer))
     else:
         # Return with error message
-        return {"message": f"Customer with id {customer_id} does not exist"}, 404
+        return {"message": f"Customer with id {id} does not exist"}, 404
 

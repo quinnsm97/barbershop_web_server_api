@@ -10,8 +10,8 @@ class Appointment(db.Model):
     status = db.Column(db.String(50), nullable=False, default="Scheduled")
 
     # Foreign Keys
-    customer_id = db.Column(db.Integer, db.ForeignKey("customers.customer_id"), nullable=False)
-    staff_id = db.Column(db.Integer, db.ForeignKey("staff.staff_id"), nullable=False)
+    customer_id = db.Column(db.Integer, db.ForeignKey("customers.id"), nullable=False)
+    staff_id = db.Column(db.Integer, db.ForeignKey("staff.id"), nullable=False)
 
     # Relationships
     customers = db.relationship("Customer", back_populates="appointments")
