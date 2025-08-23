@@ -11,9 +11,13 @@ staff_bp = Blueprint("staff", __name__, url_prefix="/staff")
 # GET /
 @staff_bp.route("/")
 def get_staff():
+    specialty = request.args.get("specialty")
+    if specialty:
+        stmt = db.select(Staff).where(Staff.specialty.ilike(specialty))
+    else:
     # Define the GET statement
     # SELECT * FROM staffs;
-    stmt = db.select(Staff)
+        stmt = db.select(Staff)
     staff_list = db.session.scalars(stmt) # Python object
     data = staff_schemas.dump(staff_list) # JavaScript JSON object
 
