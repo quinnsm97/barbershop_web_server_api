@@ -41,6 +41,7 @@ class AppointmentSchema(SQLAlchemyAutoSchema):
         load_instance = True
         include_fk = True
         include_relationships = True
+        ordered = True
     customer = fields.Nested("CustomerSchema", only=("id", "first_name", "last_name"))
     staff = fields.Nested("StaffSchema", only=("id", "first_name", "last_name", "specialty"))
 
