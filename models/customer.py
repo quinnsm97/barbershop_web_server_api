@@ -9,5 +9,5 @@ class Customer(db.Model):
     phone = db.Column(db.String(50), nullable=False, unique=True)
     
     # Relationship to appointments
-    appointments = db.relationship("Appointment", back_populates="customers", cascade="all, delete")
+    appointments = db.relationship("Appointment", back_populates="customer", cascade="all, delete")
 

@@ -14,6 +14,6 @@ class Appointment(db.Model):
     staff_id = db.Column(db.Integer, db.ForeignKey("staff.id"), nullable=False)
 
     # Relationships
-    customers = db.relationship("Customer", back_populates="appointments")
+    customer = db.relationship("Customer", back_populates="appointments")
     staff = db.relationship("Staff", back_populates="appointments")
 

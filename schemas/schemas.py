@@ -6,7 +6,7 @@ from models.staff import Staff
 from models.appointment import Appointment
 
 class CustomerSchema(SQLAlchemyAutoSchema):
-    appointments = fields.Nested("AppointmentSchema", many=True, exclude=("customers",))
+    appointments = fields.Nested("AppointmentSchema", many=True, exclude=("customer",))
     class Meta:
         model = Customer
         load_instance = True
@@ -25,6 +25,10 @@ class StaffSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Staff
         load_instance = True
+        include_fk = True
+        include_relationships = True
+        fields = ("id", "first_name", "last_name", "role", "specialty", "appointments")
+        ordered = True
 
 # Single entry
 staff_schema = StaffSchema()
