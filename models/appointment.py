@@ -1,6 +1,5 @@
 from init import db
 from marshmallow import fields
-from marshmallow.validate import Length, And, Regexp
 
 class Appointment(db.Model):
     __tablename__ = "appointments"
