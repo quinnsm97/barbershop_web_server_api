@@ -43,7 +43,7 @@ class ServiceSchema(SQLAlchemyAutoSchema):
         load_instance = True
         include_fk = True
         include_relationships = True
-        fields = ("id", "name", "price", "duration_minutes")
+        fields = ("id", "name", "price", "duration_minutes", "description")
         ordered = True
 
 # Single entry
