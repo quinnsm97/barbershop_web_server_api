@@ -91,7 +91,7 @@ def seed_tables():
         ),
         Service(
             name="Scissor Cut",
-            price=25.0,
+            price=30.0,
             duration_minutes=40,
             description="Precision scissor cut for a clean look"
         ),
@@ -150,13 +150,13 @@ def seed_tables():
     appointment_services = [
         # Appointment 1: Fade + Shampoo
         AppointmentService(appointment_id=1, service_id=1),
-        AppointmentService(appoinment_id=1, service_id=3),
+        AppointmentService(appointment_id=1, service_id=3),
 
         # Appointment 2: Scissor Cut
-        AppointmentService(appoinment_id=2, service_id=2),
+        AppointmentService(appointment_id=2, service_id=2),
 
         # Appointment 3: Kids Cut
-        AppointmentService(appoinment_id=3, service_id=5),
+        AppointmentService(appointment_id=3, service_id=5),
     ]
 
     db.session.add_all(appointment_services)
