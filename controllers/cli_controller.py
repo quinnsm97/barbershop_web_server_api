@@ -1,5 +1,6 @@
 from flask import Blueprint
 from init import db
+from models.appointment_service import AppointmentService
 from models.customer import Customer
 from models.service import Service
 from models.staff import Staff
@@ -145,6 +146,20 @@ def seed_tables():
         ),
     ]
     db.session.add_all(appointments)
+
+    appointment_services = [
+        # Appointment 1: Fade + Shampoo
+        AppointmentService(appointment_id=1, service_id=1),
+        AppointmentService(appoinment_id=1, service_id=3),
+
+        # Appointment 2: Scissor Cut
+        AppointmentService(appoinment_id=2, service_id=2),
+
+        # Appointment 3: Kids Cut
+        AppointmentService(appoinment_id=3, service_id=5),
+    ]
+
+    db.session.add_all(appointment_services)
     # Commit
     db.session.commit()
 
