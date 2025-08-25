@@ -6,3 +6,6 @@ class Service(db.Model):
      name = db.Column(db.String(50), unique=True, nullable=False)
      price = db.Column(db.Float, nullable=False)
      duration_minutes = db.Column(db.Integer, default=30)
+
+     # Relationship
+     appointmentservices = db.relationship("AppointmentService", back_populates="service")
