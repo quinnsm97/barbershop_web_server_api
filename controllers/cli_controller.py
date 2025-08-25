@@ -1,6 +1,7 @@
 from flask import Blueprint
 from init import db
 from models.customer import Customer
+from models.service import Service
 from models.staff import Staff
 from models.appointment import Appointment
 
@@ -79,6 +80,47 @@ def seed_tables():
     ]
     db.session.add_all(customers)
     db.session.add_all(staff_members)
+
+    services = [
+        Service(
+            name="Fade",
+            price=25.0,
+            duration_minutes=30,
+            description="Classic fade haircut"
+        ),
+        Service(
+            name="Scissor Cut",
+            price=25.0,
+            duration_minutes=40,
+            description="Precision scissor cut for a clean look"
+        ),
+        Service(
+            name="Shampoo",
+            price=15.0,
+            duration_minutes=20,
+            description="Hair wash and scalp massage"
+        ),
+        Service(
+            name="Colour",
+            price=50.0,
+            duration_minutes=60,
+            description="Full colour or highlights"
+        ),
+        Service(
+            name="Kids Cut",
+            price=20.0,
+            duration_minutes=25,
+            description="Haircut for children aged 3-12"
+        ),
+        Service(
+            name="Buzz Cut",
+            price=20.0,
+            duration_minutes=15,
+            description="Quick and simple buzz cut"
+        )
+    ]
+
+    db.session.add_all(services)
 
     from datetime import datetime, timedelta
 
