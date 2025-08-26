@@ -3,6 +3,10 @@ from marshmallow import fields
 
 class Appointment(db.Model):
     __tablename__ = "appointments"
+    __table_args__ = (
+        db.UniqueConstraint("customer_id", "staff_id", "appointment_datetime", name="unique_customer_staff_appointment"),
+        db.UniqueConstraint("staff_id", "appointment_datetime", name="unique_staff_appointment"),
+    )
 
     id = db.Column(db.Integer, primary_key=True)
     appointment_datetime = db.Column(db.DateTime, nullable=False)
