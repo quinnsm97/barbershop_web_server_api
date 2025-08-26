@@ -52,15 +52,16 @@ service_schema = ServiceSchema()
 service_schemas = ServiceSchema(many=True)
 
 class AppointmentSchema(SQLAlchemyAutoSchema):
-    services = fields.Nested("ServiceSchema", many=True)
+    services = fields.Nested("ServiceSchema", many=True, exclude=("id",))
     class Meta:
         model = Appointment
         load_instance = True
         include_fk = True
         include_relationships = True
         ordered = True
-    customer = fields.Nested("CustomerSchema", only=("id", "first_name", "last_name"))
-    staff = fields.Nested("StaffSchema", only=("id", "first_name", "last_name", "specialty"))
+        fields = ("id", "appointment_datetime", "status", "customer", "staff", "services")
+    customer = fields.Nested("CustomerSchema", only=("first_name", "last_name"))
+    staff = fields.Nested("StaffSchema", only=("first_name", "last_name", "specialty"))
 
 # Single entry
 appointment_schema = AppointmentSchema()
