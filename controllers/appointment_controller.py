@@ -49,7 +49,7 @@ def create_a_appointment():
             appointment_datetime = body_data.get("appointment_datetime"),
             status = body_data.get("status"),
             customer_id = body_data.get("customer_id"),
-            staff_id = body_data.get("phone")
+            staff_id = body_data.get("staff_id")
         )
         # Add the new appointment data to the session
         db.session.add(new_appointment)
@@ -63,19 +63,7 @@ def create_a_appointment():
             return {"message": f"Required field {err.orig.diag.column_name} cannot be null"}, 400
         
         if err.orig.pgcode == errorcodes.UNIQUE_VIOLATION:
-            constraint = err.orig.diag.constraint_name
-
-            # Map constraint names to user-friendly messages
-            constraint_map = {
-                "appointments_email_key": "email",
-                "appointments_phone_key": "phone"
-            }
-
-            column = constraint_map.get(constraint, "field")
-            return {"message": f"{column} must be unique"}, 400
-        
-        else: 
-            return {"message": "Unexpected error occured"}, 400
+            return{"message": err.orig.diag.message_detail}, 400
 
 # DELETE /id
 @appointment_bp.route("/<int:id>", methods=["DELETE"])
