@@ -8,7 +8,7 @@ from models.service import Service
 from models.appointment_service import AppointmentService
 
 class CustomerSchema(SQLAlchemyAutoSchema):
-    appointments = fields.Nested("AppointmentSchema", many=True, only=("id", "appointment_datetime", "services"))
+    appointments = fields.Nested("AppointmentSchema", many=True, only=("appointment_datetime", "services", "staff", "status" ))
     class Meta:
         model = Customer
         load_instance = True
@@ -23,7 +23,7 @@ customer_schema = CustomerSchema()
 customer_schemas = CustomerSchema(many=True)
 
 class StaffSchema(SQLAlchemyAutoSchema):
-    appointments = fields.Nested("AppointmentSchema", many=True, only=("id", "appointment_datetime", "services"))
+    appointments = fields.Nested("AppointmentSchema", many=True, only=("appointment_datetime", "status", "customer", "services"))
     class Meta:
         model = Staff
         load_instance = True
