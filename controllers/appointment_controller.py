@@ -13,7 +13,7 @@ appointment_bp = Blueprint("appointment", __name__, url_prefix="/appointments")
 def get_appointments():
     # Define the GET statement
     # SELECT * FROM appointments;
-    stmt = db.select(Appointment)
+    stmt = db.select(Appointment).order_by(Appointment.appointment_datetime)
     appointments_list = db.session.scalars(stmt) # Python object
     data = appointment_schemas.dump(appointments_list) # JavaScript JSON object
 
