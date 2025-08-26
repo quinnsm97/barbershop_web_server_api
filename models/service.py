@@ -8,5 +8,6 @@ class Service(db.Model):
      duration_minutes = db.Column(db.Integer, default=30)
      description = db.Column(db.String(500))
 
-     # Relationship
+     # Relationships
      appointmentservices = db.relationship("AppointmentService", back_populates="service")
+     appointments = db.relationship("Appointment", secondary="appointment_services", back_populates="services")

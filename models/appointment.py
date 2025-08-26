@@ -16,3 +16,4 @@ class Appointment(db.Model):
     customer = db.relationship("Customer", back_populates="appointments")
     staff = db.relationship("Staff", back_populates="appointments")
     appointmentservices = db.relationship("AppointmentService", back_populates="appointment")
+    services = db.relationship("Service", secondary="appointment_services", back_populates="appointments")
