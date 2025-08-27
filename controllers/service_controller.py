@@ -112,6 +112,15 @@ def update_service(id):
     if service:
         # Retrieve data to be updated
         body_data = request.get_json()
+        # Validation
+        price = body_data.get("price")
+        duration = body_data.get("duration_minutes")
+
+        if price is None or price < 0:
+            return jsonify({"error": "Price must be a positive number"}), 400
+
+        if duration is None or duration <= 0:
+            return jsonify({"error": "Duration must be greater than 0"}), 400
         # Make changes
         service.name = body_data.get("name") or service.name
         service.price = body_data.get("price") or service.price
