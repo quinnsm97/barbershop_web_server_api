@@ -44,6 +44,16 @@ def create_a_service():
     try:
         # GET info from REQUEST body
         body_data = request.get_json()
+        # Validation
+        price = body_data.get("price")
+        duration = body_data.get("duration_minutes")
+
+        if price is None or price < 0:
+            return jsonify({"error": "Price must be a positive number"}), 400
+
+        if duration is None or duration <= 0:
+            return jsonify({"error": "Duration must be greater than 0"}), 400
+        
         # Create a Service object from Service class with body response data
         new_service = Service(
             name = body_data.get("name"),
