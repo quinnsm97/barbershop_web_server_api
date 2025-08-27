@@ -1,5 +1,5 @@
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
-from marshmallow import fields
+from marshmallow import fields, validates, ValidationError, validate
 
 from models.customer import Customer
 from models.staff import Staff

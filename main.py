@@ -2,6 +2,7 @@ import os
 
 from flask import Flask
 
+from utils.error_handler import register_error_handlers
 from controllers.cli_controller import db_commands
 from controllers.customer_controller import customer_bp
 from controllers.staff_controller import staff_bp
@@ -24,5 +25,7 @@ def create_app():
     app.register_blueprint(staff_bp)
     app.register_blueprint(appointment_bp)
     app.register_blueprint(service_bp)
+
+    register_error_handlers(app)
 
     return app
