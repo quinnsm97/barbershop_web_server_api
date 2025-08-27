@@ -11,6 +11,12 @@ service_bp = Blueprint("service", __name__, url_prefix="/services")
 # GET /
 @service_bp.route("/")
 def get_services():
+    """
+    Retrieve all service records.
+
+    Returns:
+        Response: JSON list of all services or a 404 message if none found.
+    """
     # Define the GET statement
     # SELECT * FROM services;
     stmt = db.select(Service)
@@ -25,6 +31,15 @@ def get_services():
 # GET /id
 @service_bp.route("/<int:id>")
 def get_a_service(id):
+    """
+    Retrieve a single service by its ID.
+
+    Args:
+        id (int): The ID of the service to retrieve.
+
+    Returns:
+        Response: JSON of the service data or a 404 message if not found.
+    """
     # Define a statement
     stmt = db.select(Service).where(Service.id == id)
     # Execute
@@ -41,6 +56,12 @@ def get_a_service(id):
 # POST /
 @service_bp.route("/", methods=["POST"])
 def create_a_service():
+    """
+    Create a new service record.
+
+    Returns:
+        Response: JSON of the created service or error message with status code.
+    """
     try:
         # GET info from REQUEST body
         body_data = request.get_json()
@@ -90,6 +111,15 @@ def create_a_service():
 # DELETE /id
 @service_bp.route("/<int:id>", methods=["DELETE"])
 def delete_service(id):
+    """
+    Delete a service by its ID.
+
+    Args:
+        id (int): The ID of the service to delete.
+
+    Returns:
+        Response: Success or error message with appropriate status code.
+    """
     # Find service with id
     stmt = db.select(Service).where(Service.id == id)
     service = db.session.scalar(stmt)
@@ -105,6 +135,15 @@ def delete_service(id):
 # PUT/PATCH /id
 @service_bp.route("/<int:id>", methods=["PUT", "PATCH"])
 def update_service(id):
+    """
+    Update an existing service by its ID.
+
+    Args:
+        id (int): The ID of the service to update.
+
+    Returns:
+        Response: JSON of the updated service or error message with status code.
+    """
     # Retrieve via id
     stmt = db.select(Service).where(Service.id == id)
     service = db.session.scalar(stmt)

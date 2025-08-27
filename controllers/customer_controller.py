@@ -11,6 +11,12 @@ customer_bp = Blueprint("customer", __name__, url_prefix="/customers")
 # GET /
 @customer_bp.route("/")
 def get_customers():
+    """
+    Retrieve all customers from the database.
+
+    Returns:
+        Response: JSON list of all customers or a 404 message if none found.
+    """
     # Define the GET statement
     # SELECT * FROM customers;
     stmt = db.select(Customer)
@@ -25,6 +31,15 @@ def get_customers():
 # GET /id
 @customer_bp.route("/<int:id>")
 def get_a_customer(id):
+    """
+    Retrieve a single customer by ID.
+
+    Args:
+        id (int): The ID of the customer to retrieve.
+
+    Returns:
+        Response: JSON of the customer data or a 404 message if not found.
+    """
     # Define a statement
     stmt = db.select(Customer).where(Customer.id == id)
     # Execute
@@ -41,6 +56,12 @@ def get_a_customer(id):
 # POST /
 @customer_bp.route("/", methods=["POST"])
 def create_a_customer():
+    """
+    Create a new customer with provided data.
+
+    Returns:
+        Response: JSON of the newly created customer or error message on failure.
+    """
     try:
         # GET info from REQUEST body
         body_data = request.get_json()
@@ -80,6 +101,15 @@ def create_a_customer():
 # DELETE /id
 @customer_bp.route("/<int:id>", methods=["DELETE"])
 def delete_customer(id):
+    """
+    Delete a customer by ID.
+
+    Args:
+        id (int): The ID of the customer to delete.
+
+    Returns:
+        dict: Success or error message with appropriate HTTP status code.
+    """
     # Find customer with id
     stmt = db.select(Customer).where(Customer.id == id)
     customer = db.session.scalar(stmt)
@@ -95,6 +125,15 @@ def delete_customer(id):
 # PUT/PATCH /id
 @customer_bp.route("/<int:id>", methods=["PUT", "PATCH"])
 def update_customer(id):
+    """
+    Delete a customer by ID.
+
+    Args:
+        id (int): The ID of the customer to delete.
+
+    Returns:
+        dict: Success or error message with appropriate HTTP status code.
+    """
     # Retrieve via id
     stmt = db.select(Customer).where(Customer.id == id)
     customer = db.session.scalar(stmt)

@@ -11,6 +11,16 @@ staff_bp = Blueprint("staff", __name__, url_prefix="/staff")
 # GET /
 @staff_bp.route("/")
 def get_staff():
+    """
+    Retrieve a list of staff members, optionally filtered by specialty.
+
+    Query Parameters:
+        specialty (str): Optional specialty to filter staff by.
+
+    Returns:
+        JSON response containing a list of staff members if found,
+        otherwise a 404 error message.
+    """
     specialty = request.args.get("specialty")
     if specialty:
         stmt = db.select(Staff).where(Staff.specialty.ilike(specialty))
@@ -29,6 +39,16 @@ def get_staff():
 # GET /id
 @staff_bp.route("/<int:id>")
 def get_a_staff(id):
+    """
+    Retrieve a single staff member by their ID.
+
+    Args:
+        id (int): The ID of the staff member to retrieve.
+
+    Returns:
+        JSON response containing the staff member data if found,
+        otherwise a 404 error message.
+    """
     # Define a statement
     stmt = db.select(Staff).where(Staff.id == id)
     # Execute
@@ -45,6 +65,16 @@ def get_a_staff(id):
 # POST /
 @staff_bp.route("/", methods=["POST"])
 def create_a_staff():
+    """
+    Create a new staff member with the provided data.
+
+    Expects JSON in the request body with keys:
+        first_name (str), last_name (str), role (str), specialty (str).
+
+    Returns:
+        JSON response containing the created staff member data if successful,
+        or an error message with status 400 if validation fails.
+    """
     try:
         # GET info from REQUEST body
         body_data = request.get_json()
@@ -84,6 +114,16 @@ def create_a_staff():
 # DELETE /id
 @staff_bp.route("/<int:id>", methods=["DELETE"])
 def delete_staff(id):
+    """
+    Delete a staff member by their ID.
+
+    Args:
+        id (int): The ID of the staff member to delete.
+
+    Returns:
+        A success message with status 200 if deletion is successful,
+        or an error message with status 404 if the staff member does not exist.
+    """
     # Find staff with id
     stmt = db.select(Staff).where(Staff.id == id)
     staff = db.session.scalar(stmt)
@@ -99,6 +139,19 @@ def delete_staff(id):
 # PUT/PATCH /id
 @staff_bp.route("/<int:id>", methods=["PUT", "PATCH"])
 def update_staff(id):
+    """
+    Update an existing staff member's information by their ID.
+
+    Args:
+        id (int): The ID of the staff member to update.
+
+    Expects JSON in the request body with any of the following keys:
+        first_name (str), last_name (str), role (str), specialty (str).
+
+    Returns:
+        JSON response containing the updated staff member data if successful,
+        or an error message with status 404 if the staff member does not exist.
+    """
     # Retrieve via id
     stmt = db.select(Staff).where(Staff.id == id)
     staff = db.session.scalar(stmt)

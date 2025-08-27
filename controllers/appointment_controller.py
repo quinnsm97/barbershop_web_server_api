@@ -13,6 +13,12 @@ ALLOWED_STATUS = ["Scheduled", "Completed", "Cancelled"]
 # GET /
 @appointment_bp.route("/")
 def get_appointments():
+    """
+    Retrieve all appointment records ordered by appointment datetime.
+
+    Returns:
+        Response: JSON array of appointment records or a 404 error message if none found.
+    """
     # Define the GET statement
     # SELECT * FROM appointments;
     stmt = db.select(Appointment).order_by(Appointment.appointment_datetime)
@@ -27,6 +33,15 @@ def get_appointments():
 # GET /id
 @appointment_bp.route("/<int:id>")
 def get_a_appointment(id):
+    """
+    Retrieve a single appointment record by its ID.
+
+    Args:
+        id (int): The ID of the appointment to retrieve.
+
+    Returns:
+        Response: JSON object of the appointment record or a 404 error message if not found.
+    """
     # Define a statement
     stmt = db.select(Appointment).where(Appointment.id == id)
     # Execute
@@ -43,6 +58,15 @@ def get_a_appointment(id):
 # POST /
 @appointment_bp.route("/", methods=["POST"])
 def create_a_appointment():
+    """
+    Create a new appointment record with the provided data.
+
+    Expects JSON body with keys: appointment_datetime, status, customer_id, staff_id.
+
+    Returns:
+        Response: JSON object of the created appointment record with status 201,
+                  or error message with status 400 on validation or integrity errors.
+    """
     try:
         # Get info from request body
         body_data = request.get_json()
@@ -77,6 +101,16 @@ def create_a_appointment():
 # DELETE /id
 @appointment_bp.route("/<int:id>", methods=["DELETE"])
 def delete_appointment(id):
+    """
+    Delete an appointment record by its ID.
+
+    Args:
+        id (int): The ID of the appointment to delete.
+
+    Returns:
+        Response: Success message with status 200 if deleted,
+                  or error message with status 404 if appointment not found.
+    """
     # Find appointment with id
     stmt = db.select(Appointment).where(Appointment.id == id)
     appointment = db.session.scalar(stmt)
@@ -92,6 +126,19 @@ def delete_appointment(id):
 # PUT/PATCH /id
 @appointment_bp.route("/<int:id>", methods=["PUT", "PATCH"])
 def update_appointment(id):
+    """
+    Update an existing appointment record by its ID with provided data.
+
+    Args:
+        id (int): The ID of the appointment to update.
+
+    Expects JSON body with any of the keys: appointment_datetime, status, customer_id, staff_id.
+
+    Returns:
+        Response: JSON object of the updated appointment record,
+                  or error message with status 404 if appointment not found,
+                  or error message with status 400 if status is invalid.
+    """
     # Retrieve via id
     stmt = db.select(Appointment).where(Appointment.id == id)
     appointment = db.session.scalar(stmt)
