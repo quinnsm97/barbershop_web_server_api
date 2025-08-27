@@ -9,5 +9,5 @@ class Service(db.Model):
      description = db.Column(db.String(500))
 
      # Relationships
-     appointmentservices = db.relationship("AppointmentService", back_populates="service")
-     appointments = db.relationship("Appointment", secondary="appointment_services", back_populates="services")
+     appointmentservices = db.relationship("AppointmentService", back_populates="service", overlaps="services, appointment")
+     appointments = db.relationship("Appointment", secondary="appointment_services", back_populates="services", overlaps="appointmentservices, service, appointment")
