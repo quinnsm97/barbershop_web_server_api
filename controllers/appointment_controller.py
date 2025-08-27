@@ -7,6 +7,8 @@ from schemas.schemas import appointment_schemas, appointment_schema
 
 appointment_bp = Blueprint("appointment", __name__, url_prefix="/appointments")
 
+ALLOWED_STATUS = ["Scheduled", "Completed", "Cancelled"]
+
 # Routes
 # GET /
 @appointment_bp.route("/")
@@ -42,28 +44,35 @@ def get_a_appointment(id):
 @appointment_bp.route("/", methods=["POST"])
 def create_a_appointment():
     try:
-        # GET info from REQUEST body
+        # Get info from request body
         body_data = request.get_json()
-        # Create a Appointment object from Appointment class with body response data
+
+        # Validate status
+        status = body_data.get("status")
+        if status not in ALLOWED_STATUS:
+            return jsonify({"error": f"Invalid status. Allowed values: {ALLOWED_STATUS}"}), 400
+
+        # Create a new Appointment object
         new_appointment = Appointment(
-            appointment_datetime = body_data.get("appointment_datetime"),
-            status = body_data.get("status"),
-            customer_id = body_data.get("customer_id"),
-            staff_id = body_data.get("staff_id")
+            appointment_datetime=body_data.get("appointment_datetime"),
+            status=status,
+            customer_id=body_data.get("customer_id"),
+            staff_id=body_data.get("staff_id")
         )
+
         # Add the new appointment data to the session
         db.session.add(new_appointment)
-        # Commit the session
         db.session.commit()
-        # Return
-        return jsonify(appointment_schema.dump(new_appointment))
+
+        # Return the new appointment
+        return jsonify(appointment_schema.dump(new_appointment)), 201
+
     except IntegrityError as err:
         print(err.orig.pgcode)
         if err.orig.pgcode == errorcodes.NOT_NULL_VIOLATION:
             return {"message": f"Required field {err.orig.diag.column_name} cannot be null"}, 400
-        
         if err.orig.pgcode == errorcodes.UNIQUE_VIOLATION:
-            return{"message": err.orig.diag.message_detail}, 400
+            return {"message": err.orig.diag.message_detail}, 400
 
 # DELETE /id
 @appointment_bp.route("/<int:id>", methods=["DELETE"])
@@ -90,6 +99,10 @@ def update_appointment(id):
     if appointment:
         # Retrieve data to be updated
         body_data = request.get_json()
+        # Validate status if being updated
+        if "status" in body_data:
+            if body_data["status"] not in ALLOWED_STATUS:
+                return jsonify({"error": f"Invalid status. Allowed values: {ALLOWED_STATUS}"}), 400
         # Make changes
         appointment.appointment_datetime = body_data.get("appointment_datetime") or appointment.appointment_datetime
         appointment.status = body_data.get("status") or appointment.status
