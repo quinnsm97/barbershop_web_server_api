@@ -61,3 +61,7 @@ This project is an API for a barbershop appointment booking system. It enables m
    ```
    flask run
    ```
+
+## Deployment
+Online deployment takes place in the following link:
+https://barbershop-web-server-api.onrender.com
