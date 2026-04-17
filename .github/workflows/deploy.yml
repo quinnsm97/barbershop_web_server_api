@@ -50,3 +50,9 @@ jobs:
           image: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
           env_vars: |
             DATABASE_URI=${{ secrets.DATABASE_URI }}
+          flags: |
+            --allow-unauthenticated
+            --port=8080
+            --memory=512Mi
+            --min-instances=0
+            --max-instances=2
