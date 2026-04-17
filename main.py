@@ -21,6 +21,10 @@ def create_app(test_config=None):
     else:
         app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URI")
 
+    # Ensure DB is always set (fallback for tests/CI)
+    if not app.config.get("SQLALCHEMY_DATABASE_URI"):
+        app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
+
     db.init_app(app)
 
     app.json.sort_keys = False
