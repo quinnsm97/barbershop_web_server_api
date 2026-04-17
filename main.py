@@ -28,7 +28,11 @@ def create_app(test_config=None):
     db.init_app(app)
 
     with app.app_context():
-        db.create_all()
+        try:
+            db.create_all()
+            print("✅ Tables created")
+        except Exception as e:
+            print("❌ DB init failed:", e)
 
     app.json.sort_keys = False
 
