@@ -17,8 +17,7 @@ def test_create_appointment_invalid_status(client):
 
 
 def test_create_appointment_valid(client):
-    # create customer + staff first (required for FK)
-
+    # create customer first
     client.post("/customers/", json={
         "first_name": "Test",
         "last_name": "User",
@@ -26,8 +25,13 @@ def test_create_appointment_valid(client):
         "phone": "0400000000"
     })
 
-    # staff doesn't have POST route? if not, skip FK check or adjust DB
-    # assuming staff exists with ID 1 from seed logic OR remove constraint for now
+    # create staff (required for FK)
+    client.post("/staff/", json={
+        "first_name": "Staff",
+        "last_name": "Member",
+        "role": "Barber",
+        "specialty": "Fades"
+    })
 
     payload = {
         "appointment_datetime": "2025-01-01T10:00:00",
@@ -38,5 +42,5 @@ def test_create_appointment_valid(client):
 
     response = client.post("/appointments/", json=payload)
 
-    # might fail if FK missing → acceptable depending on setup
-    assert response.status_code in [201, 400]
+    # now this should succeed properly
+    assert response.status_code == 201
