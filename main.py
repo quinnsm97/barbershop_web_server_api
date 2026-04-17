@@ -2,6 +2,7 @@ import os
 
 from flask import Flask
 from dotenv import load_dotenv
+from sqlalchemy import text
 
 from utils.error_handler import register_error_handlers
 from controllers.cli_controller import db_commands
@@ -29,7 +30,7 @@ def create_app(test_config=None):
     @app.route("/health/db")
     def db_health():
         try:
-            db.session.execute("SELECT 1")
+            db.session.execute(text("SELECT 1"))
             return {"database": "connected"}
         except Exception:
             return {"database": "failed"}, 500
