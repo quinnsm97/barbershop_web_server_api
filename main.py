@@ -25,6 +25,14 @@ def create_app(test_config=None):
     @app.route("/")
     def health():
         return {"status": "ok"}
+    
+    @app.route("/health/db")
+    def db_health():
+        try:
+            db.session.execute("SELECT 1")
+            return {"database": "connected"}
+        except Exception:
+            return {"database": "failed"}, 500
 
     db.init_app(app)
 
