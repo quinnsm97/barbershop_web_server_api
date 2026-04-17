@@ -374,6 +374,7 @@ env_vars: |
   DATABASE_URI=${{ secrets.DATABASE_URI }}
 ```
 This shows how sensitive configuration is kept out of source control while still being made available to the deployed service.
+
 ---
 
 ## API Testing & Live Verification
@@ -389,6 +390,8 @@ The above screenshot shows a successful POST request made using Insomnia to crea
 The browser screenshot shows the same customer data retrieved from the deployed Cloud Run service. This confirms that the data created via Insomnia is persisted in the database and can be accessed through the live API endpoint.
 
 This end-to-end validation demonstrates that the application is fully functional in a production environment, with correct interaction between the API, Cloud Run service, and Cloud SQL database.
+
+---
 
 
 ## Industry Relevance
