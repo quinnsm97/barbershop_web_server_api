@@ -13,10 +13,13 @@ from init import db
 
 load_dotenv()
 
-def create_app():
+def create_app(test_config=None):
     app = Flask(__name__)
 
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URI")
+    if test_config:
+        app.config.update(test_config)
+    else:
+        app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URI")
 
     db.init_app(app)
 
