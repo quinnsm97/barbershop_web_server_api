@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 8080
 
 # Run app using gunicorn
-CMD ["gunicorn", "-b", "0.0.0.0:8080", "main:create_app()"]
+CMD gunicorn --bind 0.0.0.0:${PORT:-8080} "main:create_app()"
