@@ -4,6 +4,7 @@ from models.appointment import Appointment
 from sqlalchemy.exc import IntegrityError
 from psycopg2 import errorcodes
 from schemas.schemas import appointment_schemas, appointment_schema
+from datetime import datetime
 
 appointment_bp = Blueprint("appointment", __name__, url_prefix="/appointments")
 
@@ -77,8 +78,15 @@ def create_a_appointment():
             return jsonify({"error": f"Invalid status. Allowed values: {ALLOWED_STATUS}"}), 400
 
         # Create a new Appointment object
+        appointment_datetime_str = body_data.get("appointment_datetime")
+
+        try:
+            appointment_datetime = datetime.fromisoformat(appointment_datetime_str)
+        except Exception:
+            return jsonify({"error": "Invalid datetime format"}), 400
+
         new_appointment = Appointment(
-            appointment_datetime=body_data.get("appointment_datetime"),
+            appointment_datetime=appointment_datetime,
             status=status,
             customer_id=body_data.get("customer_id"),
             staff_id=body_data.get("staff_id")
