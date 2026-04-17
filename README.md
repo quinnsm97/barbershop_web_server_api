@@ -376,6 +376,20 @@ env_vars: |
 This shows how sensitive configuration is kept out of source control while still being made available to the deployed service.
 ---
 
+## API Testing & Live Verification
+
+To verify that the deployed application is functioning correctly, API requests were tested using Insomnia and validated through the live Cloud Run service in the browser.
+
+![Insomnia POST request to /customers/](<images/Screenshot 2026-04-18 at 1.15.41 am.png>)
+
+The above screenshot shows a successful POST request made using Insomnia to create a new customer. The request includes JSON data such as first name, last name, email, and phone number. A successful response confirms that the API endpoint is functioning correctly and that the application can process incoming data. The API returns structured JSON data, confirming that the customer was successfully created and stored in the database.
+
+![Browser GET request to /customers/](<images/Screenshot 2026-04-18 at 1.17.16 am.png>)
+
+The browser screenshot shows the same customer data retrieved from the deployed Cloud Run service. This confirms that the data created via Insomnia is persisted in the database and can be accessed through the live API endpoint.
+
+This end-to-end validation demonstrates that the application is fully functional in a production environment, with correct interaction between the API, Cloud Run service, and Cloud SQL database.
+
 
 ## Industry Relevance
 
